@@ -12,8 +12,8 @@ def create_app(config_class=DevelopmentConfig):
 
     with app.app_context():
         # Before first request
-        from app.models.donor import Donor
-        from app.models.receipt import Receipt
+        from app.models.user import User
+        from app.models.product import Product
         db.create_all()
 
         # Register bluprints
