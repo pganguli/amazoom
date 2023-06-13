@@ -8,15 +8,25 @@ def create_app(config_class=DevelopmentConfig):
 
     # Initialize Flask extensions
 
+    from app.models.user import User
+    from app.models.product import Product
+
     from app.extensions import db
     db.init_app(app)
+
+    from flask_login import LoginManager
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     # Within app context
     with app.app_context():
         # Before first request
 
-        from app.models.user import User
-        from app.models.product import Product
         db.create_all()
 
         # Register bluprints

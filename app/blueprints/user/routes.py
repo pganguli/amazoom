@@ -3,9 +3,11 @@ from flask import render_template
 from flask import jsonify
 from flask import Response
 
-from app.blueprints.main import bp
+from flask_login import login_required
+from flask_login import current_user
 
-from app.models.user import User
+from app.blueprints.user import bp
+
 from app.models.cart import Cart
 
 
@@ -15,6 +17,7 @@ def bad_request(e) -> tuple[Response, int]:
 
 
 @bp.route("/cart")
+@login_required
 def index() -> Response:
-    cart: list[Cart] = Cart.query.filter(Cart.user_id == user.id).all()
+    cart: list[Cart] = Cart.query.filter(Cart.user_id == current_user.id).all()
     return make_response(render_template("user/cart.html", cart=cart))
