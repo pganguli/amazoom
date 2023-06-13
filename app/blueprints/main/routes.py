@@ -13,7 +13,7 @@ from flask import Response
 
 from sqlalchemy import exc
 
-from app.main import bp
+from app.blueprints.main import bp
 from app.extensions import db
 
 from app.models.user import User
