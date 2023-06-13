@@ -10,6 +10,7 @@ def create_app(config_class=DevelopmentConfig):
 
     from app.models.user import User
     from app.models.product import Product
+    from app.models.cart import Cart
 
     from app.extensions import db
     db.init_app(app)
