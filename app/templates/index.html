@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="user-portal">
+    <div class="user-info">
+        <h2>Donation Tracker</h2>
+    </div>
+    <div class="actions">
+        <div class="action">
+            <h3>Donation Receipt</h3>
+            <p>Enter donation details and print receipt.</p>
+            <a href="/donation" class="button">Go</a>
+        </div>
+        <div class="action">
+            <h3>Print Receipt</h3>
+            <p>Print new or duplicate receipt for donation.</p>
+            <a href="/receipt" class="button">Go</a>
+        </div>
+        <div class="action">
+            <h3>Daily Summary</h3>
+            <p>View daily summary of donations.</p>
+            <a href="/daily" class="button">Go</a>
+        </div>
+        <div class="action">
+            <h3>Yearly Summary</h3>
+            <p>View yearly summary of donations.</p>
+            <a href="/yearly" class="button">Go</a>
+        </div>
+        <div class="action">
+            <h3>Export Summary</h3>
+            <p>Export summary as XLSX (Excel compatible).</p>
+            <a href="/export" class="button">Go</a>
+        </div>
+        <div class="action">
+            <h3>List Receipts</h3>
+            <p>View past receipts.</p>
+            <a href="/list" class="button">Go</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

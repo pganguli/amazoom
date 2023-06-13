@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'common/header.html' %}
+
+    <script type="text/javascript">
+        function toggleCash() {
+            let cash = document.getElementById("cash");
+            let donation_docnum = document.getElementById("donation_docnum");
+            let donation_bank = document.getElementById("donation_bank");
+            donation_docnum.disabled = cash.checked ? true : false;
+            donation_bank.disabled = cash.checked ? true : false;
+            if (!donation_docnum.disabled) {
+                donation_docnum.focus();
+            }
+        }
+
+        function togglePan() {
+            let pan = document.getElementById("pan");
+            let donor_pan = document.getElementById("donor_pan");
+            let donor_aadhaar = document.getElementById("donor_aadhaar");
+            donor_pan.disabled = pan.checked ? false : true;
+            donor_aadhaar.disabled = pan.checked ? true : false;
+            if (!donor_pan.disabled) {
+                donor_pan.focus();
+            } else {
+                donor_aadhaar.focus();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    {% include 'common/navbar.html' %}
+
+    <div class="data-entry">
+        <br>
+        {% for message in get_flashed_messages() %}
+        <p style="color:red">* {{ message }}</p>
+        {% endfor %}
+
+        <h2>Donation Entry</h2>
+        <form autocomplete="off" action="/donation" method="post">
+            <label for="donor_name">NAME<sup class="required">*</sup> :</span></label><br>
+
+            <div class="autocomplete">
+                <input type="text" id="donor_name" name="donor_name" value="{{ form.get('donor_name','') }}" required
+                    tabindex="1">
+            </div><br>
+
+            <label>
+                DONOR ID<sup class="required">*</sup> :
+                <label>
+                    <input type="radio" id="pan" name="donor_doc" value="PAN" onclick="togglePan()" checked required>
+                    PAN
+                </label>
+                <label>
+                    <input type="radio" id="aadhar" name="donor_doc" value="AADHAAR" onclick="togglePan()">
+                    AADHAAR
+                </label>
+            </label><br>
+
+            <label for="donor_pan">PAN<sup class="required">*</sup> :</label><br>
+            <input type="text" id="donor_pan" name="donor_pan" oninput="this.value = this.value.toUpperCase()"
+                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" value="{{ form.get('donor_pan','') }}" required tabindex="2"><br>
+
+            <label for="donor_pan">AADHAAR<sup class="required">*</sup> :</label><br>
+            <input type="text" id="donor_aadhaar" name="donor_aadhaar" pattern="[0-9]{12}"
+                value="{{ form.get('donor_aadhaar','') }}" required disabled tabindex="3"><br>
+
+            <label for="donor_mobile">Mobile :</label><br>
+            <input type="tel" id="donor_mobile" name="donor_mobile" pattern="[0-9]{10}" title="10 digits"
+                value="{{ form.get('donor_mobile','') }}" tabindex="4"><br>
+
+            <label for="donor_email">E-mail :</label><br>
+            <input type="email" id="donor_email" name="donor_email" value="{{ form.get('donor_email','') }}"
+                tabindex="5"><br>
+
+            <label for="donor_address">POSTAL ADDRESS :</label><br>
+            <textarea id="donor_address" name="donor_address" value="{{ form.get('donor_address','') }}"
+                spellcheck="false" tabindex="6"></textarea><br>
+
+            <label>
+                PURPOSE<sup class="required">*</sup> :<br>
+                <label>
+                    <input type="radio" name="donation_purpose" value="GENERAL FUND" checked required>
+                    GENERAL FUND
+                </label><br>
+                <label>
+                    <input type="radio" name="donation_purpose" value="THAKUR SEWA">
+                    THAKUR SEWA
+                </label><br>
+                <label>
+                    <input type="radio" name="donation_purpose" value="IMMOVABLE PROPERTY FUND">
+                    IMMOVABLE PROPERTY FUND
+                </label><br>
+                <label>
+                    <input type="radio" name="donation_purpose" value="MOVABLE PROPERTY FUND">
+                    MOVABLE PROPERTY FUND
+                </label><br>
+                <label>
+                    <input type="radio" name="donation_purpose" value="ENDOWMENT PERMANENT FUND">
+                    ENDOWMENT PERMANENT FUND
+                </label><br>
+                <label>
+                    <input type="radio" name="donation_purpose" value="CAPITAL RESERVE FUND">
+                    CAPITAL RESERVE FUND
+                </label>
+            </label><br>
+
+            <label>
+                RS.<sup class="required">*</sup> :
+                <input type="number" min="1" step="1" id="donation_amount" name="donation_amount"
+                    value="{{ form.get('donation_amount','') }}" required tabindex="7">
+            </label><br>
+
+            <label>
+                DONATION IN<sup class="required">*</sup> :
+                <label>
+                    <input type="radio" id="cash" name="donation_method" value="CASH" onclick="toggleCash()" checked
+                        required>
+                    CASH
+                </label>
+                <label>
+                    <input type="radio" name="donation_method" value="CHEQUE" onclick="toggleCash()">
+                    CHEQUE
+                </label>
+                <label>
+                    <input type="radio" name="donation_method" value="BANK DRAFT" onclick="toggleCash()">
+                    BANK DRAFT
+                </label>
+            </label><br>
+
+            <label for="donation_docnum">CHEQUE / DRAFT NO. :</label><br>
+            <input type="text" id="donation_docnum" name="donation_docnum" value="{{ form.get('donation_docnum','') }}"
+                required disabled tabindex="8"><br>
+
+            <label for="donation_bank">DRAWN ON - BANK NAME :</label><br>
+            <input type="text" id="donation_bank" name="donation_bank" value="{{ form.get('donation_bank','') }}"
+                required disabled tabindex="9"><br>
+
+            <label for="donation_place">PLACE :</label><br>
+            <input type="text" id="donation_place" name="donation_place" value="{{ form.get('donation_place','') }}"
+                tabindex="10"><br>
+
+            <input type="submit" value="Submit" tabindex="11">
+        </form>
+    </div>
+
+    <script>
+        function autocomplete(inp) {
+            inp.addEventListener("input", function (e) {
+                closeAllLists();
+
+                let val = this.value;
+                if (!val) {return false;}
+                val = val.toUpperCase();
+                this.value = val;
+                if (val.length < 3) {return false;}
+
+                let formData = new FormData();
+                formData.append('name', val);
+
+                fetch("/complete", {
+                    method: "POST",
+                    body: formData,
+                }).then((response) => response.json())
+                  .then((data) => {
+                    console.log(data);
+
+                    let a = document.createElement("DIV");
+                    a.setAttribute("id", this.id + "autocomplete-list");
+                    a.setAttribute("class", "autocomplete-items");
+                    this.parentNode.appendChild(a);
+
+                    for (let i = 0; i < data.matches.length; i++) {
+                        let b = document.createElement("DIV");
+                        b.innerHTML += data.matches[i].name + "<" + data.matches[i].pan + ">";
+                        b.innerHTML += "<input type='hidden'>";
+                        b.addEventListener("click", function (e) {
+                            inp.value = data.matches[i].name;
+
+                            let donor_pan     = document.getElementById("donor_pan");
+                            let donor_aadhaar = document.getElementById("donor_aadhaar");
+                            let donor_mobile  = document.getElementById("donor_mobile");
+                            let donor_email   = document.getElementById("donor_email");
+                            let donor_address = document.getElementById("donor_address");
+                            let pan           = document.getElementById("pan");
+                            let aadhaar       = document.getElementById("aadhar");
+
+                            if (data.matches[i].pan) {
+                                donor_pan.value = data.matches[i].pan;
+                                pan.checked     = true;
+                                aadhaar.checked = false;
+                            }
+                            else if (data.matches[i].aadhaar) {
+                                donor_aadhaar.value = data.matches[i].aadhaar;
+                                pan.checked     = false;
+                                aadhaar.checked = true;
+                            }
+                            if (data.matches[i].mobile) {
+                                donor_mobile.value = data.matches[i].mobile;
+                            }
+                            if (data.matches[i].email) {
+                                donor_email.value = data.matches[i].email;
+                            }
+                            if (data.matches[i].address) {
+                                donor_address.value = data.matches[i].address;
+                            }
+
+                            togglePan();
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+
+            });
+            function closeAllLists(elmnt) {
+                let x = document.getElementsByClassName("autocomplete-items");
+                for (let i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        autocomplete(document.getElementById("donor_name"));
+    </script>
+</body>
+
+</html>

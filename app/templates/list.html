@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="data-entry">
+    <br>
+    {% for message in get_flashed_messages() %}
+    <p style="color:red">* {{ message }}</p>
+    {% endfor %}
+
+    <h2>Search Receipt</h2>
+    <form action="/receipt" method="post">
+        <label for="serial">RECEIPT SERIAL :</label><br>
+        {% if serial != '' %}
+        <input type="number" min="1" step="1" id="serial" name="serial" value="{{ serial }}" required><br>
+        {% else %}
+        <input type="number" id="serial" name="serial" required><br>
+        {% endif %}
+
+        <input type="submit" value="Print">
+    </form>
+</div>
+{% endblock %}

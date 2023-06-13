@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="panel">
+    <h2>View Receipts</h2>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Serial</th>
+            <th>Amount</th>
+        </tr>
+        {% for receipt in receipts %}
+        <tr>
+            <td>{{ receipt.datetime }}</td>
+            <td>{{ receipt.serial }}</td>
+            <td><input type="button" onclick="location.href='/list?serial={{ receipt.serial }}';" value="Print">
+            </td>
+            <td>
+                <form action="/cancel" method="post">
+                    <input type="hidden" name="serial" value="{{ receipt.serial }}">
+                    <input type="submit" value="Cancel">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
