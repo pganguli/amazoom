@@ -13,23 +13,23 @@ from flask_login import login_user
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 
-from app.blueprints.auth import bp
+from app.blueprints.auth import auth_bp
 
 from app.extensions import db
 from app.models.user import User
 
 
-@bp.errorhandler(400)
+@auth_bp.errorhandler(400)
 def bad_request(e) -> tuple[Response, int]:
     return jsonify(error=str(e)), 400
 
 
-@bp.route("/login")
+@auth_bp.route("/login")
 def login() -> Response:
     return make_response(render_template("auth/login.html"))
 
 
-@bp.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login_post():
     email: str | None = request.form.get('email')
     password: str = request.form.get('password', "")
@@ -46,12 +46,12 @@ def login_post():
     return redirect(url_for('main.index'))
 
 
-@bp.route("/register")
+@auth_bp.route("/register")
 def register() -> Response:
     return make_response(render_template("auth/register.html"))
 
 
-@bp.route("/register", methods=["POST"])
+@auth_bp.route("/register", methods=["POST"])
 def register_post() -> Response:
     name: str | None = request.form.get("name")
     email: str | None = request.form.get("email")

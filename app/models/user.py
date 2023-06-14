@@ -8,3 +8,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     address = db.Column(db.String)
+
+    def __repr__(self):
+        return f"<User(id='{self.id}', email='{self.email}')>"

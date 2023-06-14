@@ -6,18 +6,22 @@ from flask import Response
 from flask_login import login_required
 from flask_login import current_user
 
-from app.blueprints.user import bp
+from app.blueprints.user import user_bp
 
 from app.models.cart import Cart
+from app.models.product import Product
 
 
-@bp.errorhandler(400)
+@user_bp.errorhandler(404)
 def bad_request(e) -> tuple[Response, int]:
-    return jsonify(error=str(e)), 400
+    return jsonify(error=str(e)), 404
 
 
-@bp.route("/cart")
+@user_bp.route("/cart")
 @login_required
 def index() -> Response:
     cart: list[Cart] = Cart.query.filter(Cart.user_id == current_user.id).all()
-    return make_response(render_template("user/cart.html", cart=cart))
+    products: list[Product] = []
+    for cart_item in cart:
+        products.append(Product.query.get(cart_item.product_id))
+    return make_response(render_template("user/cart.html", user=current_user, cart=cart, products=products))

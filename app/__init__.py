@@ -15,14 +15,17 @@ def create_app(config_class=DevelopmentConfig):
     from app.extensions import db
     db.init_app(app)
 
-    from flask_login import LoginManager
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
+    from app.extensions import login_manager
+    login_manager.login_view = "auth.login"
     login_manager.init_app(app)
 
     @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
+    def load_user(user_id: str):
+        try:
+            return User.query.get(int(user_id))
+        except ValueError:
+            pass
+        return None
 
     # Within app context
     with app.app_context():
@@ -32,16 +35,16 @@ def create_app(config_class=DevelopmentConfig):
 
         # Register bluprints
 
-        from app.blueprints.main import bp as main_bp
+        from app.blueprints.main import main_bp
         app.register_blueprint(main_bp)
 
-        from app.blueprints.auth import bp as auth_bp
+        from app.blueprints.auth import auth_bp
         app.register_blueprint(auth_bp)
 
-        from app.blueprints.user import bp as user_bp
+        from app.blueprints.user import user_bp
         app.register_blueprint(user_bp)
 
-        from app.blueprints.product import bp as product_bp
+        from app.blueprints.product import product_bp
         app.register_blueprint(product_bp)
 
         return app
