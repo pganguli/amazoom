@@ -31,22 +31,23 @@
               <form action="/register" method="POST">
                 <!-- Name input -->
                 <div class="form-outline mb-4">
-                      <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" />
+                      <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" required="" />
                 </div>
 
                 <!-- Email input -->
                 <div class="form-outline mb-4">
-                  <input type="email" id="email" name="email" class="form-control" placeholder="Email address" />
+                  <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required="" />
                 </div>
 
                 <!-- Password input -->
                 <div class="form-outline mb-4">
-                  <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+                  <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="" />
                 </div>
 
                 <!-- Checkbox -->
                 <div class="form-check d-flex justify-content-center mb-4">
-                  <input class="form-check-input me-2" type="checkbox" value="" id="toc" name="toc" />
+                  <input class="form-check-input me-2" type="checkbox" value="" id="toc" name="toc"
+                    onclick="this.parentNode.parentNode.querySelector('button[type=submit]').toggleAttribute('disabled')" />
                   <label class="form-check-label" for="form2Example33">
                     Agree to Terms and Conditions
                   </label>
@@ -54,7 +55,7 @@
 
                 <!-- Submit button -->
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-block mb-4">
+                    <button type="submit" class="btn btn-primary btn-block mb-4" disabled="">
                       Sign up
                     </button>
                 </div>

@@ -68,7 +68,7 @@ def register_post() -> Response:
     new_user = User(
         email=email,
         name=name,
-        password=generate_password_hash(password, method="sha256"),
+        password=generate_password_hash(password),
     )
     db.session.add(new_user)
     db.session.commit()
