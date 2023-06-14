@@ -13,10 +13,10 @@
               <div class="col-md-2 col-lg-2 col-xl-2">
                 <img
                   src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                  class="img-fluid rounded-3" alt="Cotton T-shirt">
+                  class="img-fluid rounded-3" alt="{{ products[loop.index0].name }}">
               </div>
               <div class="col-md-3 col-lg-3 col-xl-3">
-                <p class="lead fw-normal mb-2">Basic T-shirt</p>
+                <p class="lead fw-normal mb-2">{{ products[loop.index0].name }}</p>
                 <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
               </div>
               <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -25,7 +25,7 @@
                   <i class="bi bi-dash"></i>
                 </button>
 
-                <input id="form1" min="0" name="quantity" value="2" type="number"
+                <input id="quantity" min="0" max="{{ products[loop.index0].quantity }}" name="quantity" value="{{ cart_item.quantity }}" type="number"
                   class="form-control form-control-sm" />
 
                 <button class="btn btn-link px-2"
@@ -34,7 +34,7 @@
                 </button>
               </div>
               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$499.00</h5>
+                  <h5 class="mb-0">INR {{ cart_item.fixed_price }}</h5>
               </div>
               <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                 <a href="#!" class="text-danger"><i class="bi bi-trash"></i></a>

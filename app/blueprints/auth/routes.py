@@ -4,8 +4,6 @@ from flask import request
 from flask import redirect
 from flask import url_for
 from flask import flash
-from flask import abort
-from flask import jsonify
 from flask import Response
 
 from flask_login import login_user
@@ -17,11 +15,6 @@ from app.blueprints.auth import auth_bp
 
 from app.extensions import db
 from app.models.user import User
-
-
-@auth_bp.errorhandler(400)
-def bad_request(e) -> tuple[Response, int]:
-    return jsonify(error=str(e)), 400
 
 
 @auth_bp.route("/login")
@@ -57,8 +50,15 @@ def register_post() -> Response:
     email: str | None = request.form.get("email")
     password: str = request.form.get("password", "")
 
+    if name is None or name == "":
+        flash("No full name supplied.")
+        return make_response(redirect(url_for("auth.register")))
+    if email is None or email == "":
+        flash("No email supplied.")
+        return make_response(redirect(url_for("auth.register")))
     if password == "":
-        abort(400, description="No password supplied.")
+        flash("No password supplied.")
+        return make_response(redirect(url_for("auth.register")))
 
     user = User.query.filter_by(email=email).first()
     if user:
